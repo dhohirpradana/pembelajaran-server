@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -22,7 +21,8 @@ class GameController extends Controller
 
     public function store(Request $request)
     {
-        $name = "images/" . Str::random(20) . time() . ".jpg";
+        $extension = $request->file("image")->extension();
+        $name = "images/" . Str::random(20) . time() . "." . $extension;
 
         $request->file("image")->storeAs(
             'public/',
@@ -30,11 +30,11 @@ class GameController extends Controller
         );
 
         $id = DB::table('game_soal')->insertGetId([
-                'name' => $request->name,
-                "gambar" => $name
-            ]);
+            'name' => $request->name,
+            "gambar" => $name
+        ]);
 
-        for ($i=0; $i < count($request->jawaban); $i++) { 
+        for ($i = 0; $i < count($request->jawaban); $i++) {
 
             if ($request->benar == $i) {
                 DB::table('game_jawaban')->insert([
@@ -42,7 +42,7 @@ class GameController extends Controller
                     "benar"             => 1,
                     "game_soal_id"      => $id
                 ]);
-            }else{
+            } else {
                 DB::table('game_jawaban')->insert([
                     'jawaban'           => $request->jawaban[$i],
                     "benar"             => 0,
@@ -63,10 +63,33 @@ class GameController extends Controller
         if (empty($soal)) abort(404);
 
         $game_jawaban = DB::table("game_jawaban")
-        ->where("game_soal_id", $soal->id)
-        ->get();
+            ->where("game_soal_id", $soal->id)
+            ->get();
 
-        return view("game.show", compact("soal", "game_jawaban"));
+        return view("game.index", compact("soal", "game_jawaban"));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $game = DB::table("game_soal")->where("id", $id)->update([
+            "name"          => $request->name,
+        ]);
+
+        for ($i = 0; $i < count($request->jawaban); $i++) {
+
+            if ($request->benar == $i) {
+                DB::table('game_jawaban')->where("jawaban", $request->jawaban[$i])->update([
+                    "benar"             => 1,
+                ]);
+            } else {
+                DB::table('game_jawaban')->where("jawaban", $request->jawaban[$i])->update([
+                    "benar"             => 0,
+                ]);
+            }
+        }
+
+        return redirect("/game")->with("msg", "game berhasil diupdate");
     }
 
     public function destroy($id)

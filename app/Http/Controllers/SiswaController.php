@@ -38,8 +38,7 @@ class SiswaController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd("asas");
-        if ($request->password) {
+        if ($request->password != '') {
             $siswa = DB::table("siswa")->where("id", $id)->update([
                 "name"          => $request->name,
                 "nik"           => $request->nik,
@@ -51,7 +50,6 @@ class SiswaController extends Controller
                 "whatsapp"      => $request->whatsapp,
             ]);
         } else {
-            
             $siswa = DB::table("siswa")->where("id", $id)->update([
                 "name"          => $request->name,
                 "nik"           => $request->nik,
@@ -61,7 +59,7 @@ class SiswaController extends Controller
                 "alamat"        => $request->alamat,
                 "whatsapp"      => $request->whatsapp,
             ]);
-        }        
+        }
 
         return redirect("/siswa")->with("msg", "siswa berhasil diupdate");
     }

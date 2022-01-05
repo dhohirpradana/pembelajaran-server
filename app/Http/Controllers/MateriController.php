@@ -23,13 +23,16 @@ class MateriController extends Controller
     public function store(Request $request)
     {
         $id = DB::table('materi')->insertGetId(
-            ['title' => $request->title]
+            [
+                'title' => $request->title,
+                'konten' => $request->konten
+            ]
         );
 
+        foreach ($request->image as $gambar) {
+            $extension = $gambar->extension();
 
-        foreach ($request->image as $image => $gambar) {
-
-            $name = "images/" . Str::random(20) . time() . ".jpg";
+            $name = "images/" . Str::random(20) . time() . "." . $extension;
 
             $gambar->storeAs(
                 'public/',
@@ -54,8 +57,8 @@ class MateriController extends Controller
         if (empty($materi)) abort(404);
 
         $detail_materi = DB::table("detail_materi")
-        ->where("materi_id", $materi->id)
-        ->get();
+            ->where("materi_id", $materi->id)
+            ->get();
 
         return view("materi.show", compact("materi", "detail_materi"));
     }

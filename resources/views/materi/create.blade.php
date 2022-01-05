@@ -1,12 +1,3 @@
-<script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
-<script>
-    var konten = document.getElementById("konten");
-     CKEDITOR.replace(konten,{
-     language:'en-gb'
-   });
-   CKEDITOR.config.allowedContent = true;
-</script>
-
 @extends('layouts.app')
 
 @section('content')
@@ -37,17 +28,17 @@
                                 <input type="text" class="form-control" name="title">
                             </div>
                             <div class="form-group">
-                                <div class="gallery"></div>
+                                <textarea id="konten" class="form-control" name="konten" rows="10" cols="50"
+                                    style="height: 250"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="">Isi Materi (bisa lebih dari 1 gambar)</label> <br>
                                 <input type="file" name="image[]" multiple id="gallery-photo-add"
                                     accept="image/x-png,image/gif,image/jpeg">
                             </div>
-                            {{-- <div class="form-group">
-                                <textarea id="konten" class="form-control" name="konten" rows="10" cols="50"
-                                    style="height: 250"></textarea>
-                            </div> --}}
+                            <div class="form-group">
+                                <div class="gallery"></div>
+                            </div>
                             <div class="form-group">
                                 <button class="btn btn-sm btn-primary" type="submit">Tambah</button>
                             </div>
@@ -95,6 +86,13 @@
         });
     });
 
-   
+</script>
+<script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
+<script>
+    var konten = document.getElementById("konten");
+         CKEDITOR.replace(konten,{
+         language:'en-gb'
+       });
+       CKEDITOR.config.allowedContent = true;
 </script>
 @endsection

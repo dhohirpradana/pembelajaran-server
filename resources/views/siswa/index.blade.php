@@ -35,7 +35,7 @@
                             <div class="form-group row">
                                 <div class="col-12">
                                     <label>Password (di isi jika ingin mengganti password)</label>
-                                    <input type="password" name="password" class="form-control" required>
+                                    <input type="password" name="password" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">

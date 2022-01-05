@@ -28,3 +28,4 @@ Route::get("game/{id}",     "Api\GameController@show");
 
 Route::get("tugas",         "Api\TugasController@index");
 Route::get("tugas/{id}",     "Api\TugasController@show");
+Route::post("tugas/{id}/{siswaId}",     "Api\TugasController@store");
